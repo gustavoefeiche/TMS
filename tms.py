@@ -2,6 +2,14 @@
 
 import numpy as np
 
+def is_superior( i, j, size):
+    if(i==size[0] and j !=0 and j != size[1]-1):
+        return True
+
+def is_inferior(i, j, size):
+    if(i==size[0]-1 and j != 0 and j != size[1]-1):
+        return True
+
 def is_border(i, j, size):
     if(i == 0 or i == size[0]-1 or j == 0 or j == size[1]-1):
         return True
@@ -40,21 +48,50 @@ def printm(m):
     for line in m:
         print(line)
 
-def D2():
+def D2(borderB, borderT=None, borderL=None, borderR=None):
+    #file = open("test.in", "r") 
+    #print(file.read())
 
     print("Computing 2D temperature matrix")
-    tfinal = 10.0
-    t_n_points = 10000.0
+
+############################################
+    #top_edge = int(file.readline(5))
+    #left_edge = int(file.readline(5))
+    #right_edge = int(file.readline(5))
+    #bottom_edge = int(file.readline(5))
+    #internal_temperature = int(file.readline(5))
+
+    #tfinal = int(file.readline(5))
+    #t_n_points = int(file.readline(5))
+
+##################################################
+    top_edge = 100
+    left_edge = 75
+    right_edge = 50
+    bottom_edge = 0
+    internal_temperature = 0
+
+    tfinal = 200.0
+    t_n_points = 320000.0
     dt = tfinal/t_n_points
+    print(dt)
 
     time = np.linspace(0.0, tfinal, 100)
+#####################################################
+    #width = int(file.readline(5))
+    #w_n_points = int(file.readline(5))
+    #dwidth = width/w_n_points
 
-    width = 5.0
-    w_n_points = 5.0
+    #height = int(file.readline(5))
+    #h_n_points = int(file.readline(5))
+    #dheight = height/h_n_points
+#######################################################
+    width = 0.5
+    w_n_points = 10
     dwidth = width/w_n_points
 
-    height = 1
-    h_n_points = 5.0
+    height = 0.5
+    h_n_points = 10
     dheight = height/h_n_points
 
     step = np.linspace(0.0, width, 5)
@@ -62,9 +99,15 @@ def D2():
     test = np.zeros((int(w_n_points), int(h_n_points)))
     test_w = test.shape[0]
     test_h = test.shape[1]
+    
 
+    #alpha = int(file.readline(5))
     alpha = 1
-    F0 = alpha*(float(0.1)/float((dwidth**2)))
+    F0 = alpha*(float(dt)/float((dwidth**2)))
+
+    print(F0)
+
+    aresta = "inferior"
 
     T = test[:]
 
@@ -72,10 +115,13 @@ def D2():
         for j in range(test_h):
             if i == 0 and (j != test_w-1 and j != 0):
                 test[i][j] = 100
-            if j == 0 and (i != test_w-1 and i != 0):
+            if i == test_w-1 and (j != test_w-1 and j != 0):
+                test[i][j] = 0
+            if j == 0 and (i != 0):
                 test[i][j] = 75
-            if j == test_h - 1 and (i != test_w-1 and i != 0):
+            if j == test_h - 1 and (i != 0):
                 test[i][j] = 50
+            
 
 
     for t in range(len(time)-1):
@@ -85,9 +131,24 @@ def D2():
                 for j in range(test_h):
                     if not is_border(i,j,[test_w, test_h]):
                         T[i][j] = F0*(prev_T[i+1][j] + prev_T[i-1][j] + prev_T[i][j+1] + prev_T[i][j-1]) + prev_T[i][j]*(1 - 4*F0)
+                    elif borderB=="bottom":
+                        #print("bottom")
+                        if is_inferior(i, j, [test_w, test_h]):
+                            T[i][j] = F0*(2*prev_T[test_w-2][j] + prev_T[test_w-1][j+1] + prev_T[test_w-1][j-1]) + (1-4*F0)*prev_T[test_w-1][j]
 
+                    #elif borderT=="top":
+                    #    if is_superior(i, j, [test_w, test_h]):
+                    #        T[i][j] = F0*(2*prev_T[1][j] + prev_T[0][j+1] + prev_T[0][j-1]) + (1-4*F0)*prev_T[0][j]
+                    #elif borderL == "left":
+                    #    T[i][j] = 
+        
+
+                    
+    #file.close() 
     return T
 
 if __name__ == '__main__':
     # D1()
-    printm(D2())
+    # printm(D2())
+    np.savetxt('test.out', D2("top"), fmt='%1.4e') 
+    

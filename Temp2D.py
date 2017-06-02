@@ -90,16 +90,20 @@ def solve(props):
                     curT[i][j] = F0*(oldT[i+1][j] + oldT[i-1][j] + oldT[i][j+1] + oldT[i][j-1]) + (1 - 4*F0)*oldT[i][j]
         oldT = curT
 
-    print("Result")
-    print(curT)
     return curT
 
 def main():
-    print("Solving 2D...")
+    print("STATUS: Solving 2D...")
 
     # Solve using file passed by user
     props = read_props_file(sys.argv[1])
     T = solve(props)
+
+    print("STATUS: Done!")
+    print(T)
+
+    np.savetxt("tms.out", T)
+    print("\nSTATUS: Saved data to tms.out")
 
     # Plot heat map
     plt.imshow(T, cmap='bwr', interpolation='nearest')

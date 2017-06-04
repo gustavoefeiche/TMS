@@ -140,7 +140,12 @@ def solve(props):
 def main():
     props = read_props_file(sys.argv[1])
     result = solve(props)
-    np.savetxt('Temp2D.out', result, fmt='%1.4e')
+    
+    with open("Temp2D.out", "w") as outf:
+      for i in result:
+        for j in i:
+          outf.write(str(j) + " ")
+        outf.write("\n")
 
     # Plot heat map
     plt.imshow(result, cmap='bwr', interpolation='nearest')

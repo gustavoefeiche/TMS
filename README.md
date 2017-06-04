@@ -48,4 +48,4 @@ ISOLATED_RIGHT_BORDER 0
 ### Output plot
 #### Heat map showing temperature distribution in 2D surface
 
-![Temperature Plot](https://doc-0o-2g-docs.googleusercontent.com/docs/securesc/6fv40o8rad1nevbum4hp993jnjbb7eov/7qilf2a93hl3f6qitbm4ibmmm4mrdtda/1496534400000/09269010577289278083/09269010577289278083/0B8RFb9mtS6TNaXVqU0FXNWtjNlk)
+![Temperature Plot](http://i.imgur.com/qWLWa7U.png)
